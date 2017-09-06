@@ -1,0 +1,35 @@
+RewriteEngine on
+RewriteCond %{QUERY_STRING} ^(.+)$
+RewriteRule ^([^/.]+)/$ index.php?P_C=$1&%1
+RewriteRule ^([^/.]+)/$ index.php?P_C=$1
+RewriteCond %{QUERY_STRING} ^(.+)$
+RewriteRule ^([^/.]+)$ index.php?P_C=$1&%1
+RewriteRule ^([^/.]+)$ index.php?P_C=$1
+
+RewriteCond %{QUERY_STRING} ^(.+)$
+RewriteRule ^([^/.]+)/([^/]+)/$ index.php?P_C=$1&P_A=$2&%1
+RewriteRule ^([^/.]+)/([^/]+)/$ index.php?P_C=$1&P_A=$2
+RewriteCond %{QUERY_STRING} ^(.+)$
+RewriteRule ^([^/.]+)/([^/]+)$ index.php?P_C=$1&P_A=$2&%1
+RewriteRule ^([^/.]+)/([^/]+)$ index.php?P_C=$1&P_A=$2
+
+RewriteCond %{QUERY_STRING} ^(.+)$
+RewriteRule ^([^/.]+)/([^/]+)/([^/]+)/$ index.php?P_C=$1&P_A=$2&P_P1=$3&%1
+RewriteRule ^([^/.]+)/([^/]+)/([^/]+)/$ index.php?P_C=$1&P_A=$2&P_P1=$3
+RewriteCond %{QUERY_STRING} ^(.+)$
+RewriteRule ^([^/.]+)/([^/]+)/([^/]+)$ index.php?P_C=$1&P_A=$2&P_P1=$3&%1
+RewriteRule ^([^/.]+)/([^/]+)/([^/]+)$ index.php?P_C=$1&P_A=$2&P_P1=$3
+
+RewriteCond %{QUERY_STRING} ^(.+)$
+RewriteRule ^([^/.]+)/([^/]+)/([^/]+)/([^/]+)/$ index.php?P_C=$1&P_A=$2&P_P1=$3&P_P2=$4&%1
+RewriteRule ^([^/.]+)/([^/]+)/([^/]+)/([^/]+)/$ index.php?P_C=$1&P_A=$2&P_P1=$3&P_P2=$4
+RewriteCond %{QUERY_STRING} ^(.+)$
+RewriteRule ^([^/.]+)/([^/]+)/([^/]+)/([^/]+)$ index.php?P_C=$1&P_A=$2&P_P1=$3&P_P2=$4&%1
+RewriteRule ^([^/.]+)/([^/]+)/([^/]+)/([^/]+)$ index.php?P_C=$1&P_A=$2&P_P1=$3&P_P2=$4
+
+RewriteCond %{QUERY_STRING} ^(.+)$
+RewriteRule ^([^/.]+)/([^/]+)/([^/]+)/([^/]+)/([^/]+)/$ index.php?P_C=$1&P_A=$2&P_P1=$3&P_P2=$4&P_P3=$5&%1
+RewriteRule ^([^/.]+)/([^/]+)/([^/]+)/([^/]+)/([^/]+)/$ index.php?P_C=$1&P_A=$2&P_P1=$3&P_P2=$4&P_P3=$5
+RewriteCond %{QUERY_STRING} ^(.+)$
+RewriteRule ^([^/.]+)/([^/]+)/([^/]+)/([^/]+)/([^/]+)$ index.php?P_C=$1&P_A=$2&P_P1=$3&P_P2=$4&P_P3=$5&%1
+RewriteRule ^([^/.]+)/([^/]+)/([^/]+)/([^/]+)/([^/]+)$ index.php?P_C=$1&P_A=$2&P_P1=$3&P_P2=$4&P_P3=$5
