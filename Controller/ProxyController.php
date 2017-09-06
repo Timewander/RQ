@@ -28,7 +28,10 @@ class ProxyController {
 	}
 
 	public static function request() {
-        return Request::method() == "get" ? self::getRequest() : self::postRequest();
+
+        $response = Request::method() == "get" ? self::getRequest() : self::postRequest();
+        echo $response;
+        return null;
 	}
 
     private static function getRequest() {
@@ -43,9 +46,9 @@ class ProxyController {
                 "key" => $key,
                 "req" => json_decode($req),
             ]);
-            echo $res;
+            return $res;
         }
-        return null;
+        return "";
     }
 
     private static function postRequest($data = null) {
@@ -64,13 +67,12 @@ class ProxyController {
                 $res = $redis->RedisString($key)->get();
                 if ($res !== false) {
                     $redis->del($key);
-                    echo $res;
-                    return null;
+                    return $res;
                 }
                 $try ++;
             }
         }
-        return null;
+        return "";
     }
 
     public static function response() {
