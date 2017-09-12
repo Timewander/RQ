@@ -8,7 +8,7 @@ foreach ($need as $path) {
 }
 
 function __autoload($className) {
-    $paths = ["Lib/", "Api/", "Controller/", ""];
+    $paths = ["Lib/", "Service/", "Controller/", "Handler/", ""];
     foreach ($paths as $path) {
         $classpath = ROOT_DIR . "/{$path}{$className}.php";
         if (file_exists($classpath)) {

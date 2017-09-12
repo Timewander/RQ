@@ -21,6 +21,8 @@ class ProxyController {
                 return self::rwf();
             case "rwf_backend" :
                 return self::rwf_backend();
+            case "swse" :
+                return self::swse();
             default :
                 break;
         }
@@ -29,51 +31,11 @@ class ProxyController {
 
 	public static function request() {
 
-        $response = Request::method() == "get" ? self::getRequest() : self::postRequest();
+        header("Access-Control-Allow-Origin: *");
+        $response = Request::method() == "get" ? Proxy::getRequest() : Proxy::postRequest();
         echo $response;
         return null;
 	}
-
-    private static function getRequest() {
-
-        header("Access-Control-Allow-Origin: *");
-        $redis = new RedisBase();
-        $key = $redis->RedisList("proxy_request_list")->pop();
-        if ($key !== false) {
-            $req = $redis->RedisString($key)->get();
-            $redis->del($key);
-            $res = json_encode([
-                "key" => $key,
-                "req" => json_decode($req),
-            ]);
-            return $res;
-        }
-        return "";
-    }
-
-    private static function postRequest($data = null) {
-
-        header("Access-Control-Allow-Origin: *");
-        $data = is_null($data) ? Request::post("data") : $data;
-        $redis = new RedisBase();
-        if (is_array($data) && isset($data["url"]) && isset($data["body"]) && isset($data["header"])) {
-            $key = $redis->RedisString("proxy_list_index")->incr();
-            $redis->RedisString($key)->set(json_encode($data));
-            $redis->RedisList("proxy_request_list")->add($key);
-            $try = 0;
-            $key .= "_response";
-            while ($try < 600) {
-                usleep(50000);
-                $res = $redis->RedisString($key)->get();
-                if ($res !== false) {
-                    $redis->del($key);
-                    return $res;
-                }
-                $try ++;
-            }
-        }
-        return "";
-    }
 
     public static function response() {
 
@@ -114,10 +76,33 @@ class ProxyController {
         return null;
     }
 
+    public static function swse() {
+
+        $host = "https://swset-cn-cartier-quality.intranet.rccad.net:8443/webservices";
+        $_uri = $_SERVER["REQUEST_URI"];
+        $uri = substr($_uri, 11);
+        $url = $host . $uri;
+        $checkWSDL = strtolower(substr($url, -5)) === "?wsdl";
+        if ($checkWSDL) {
+            $payload = self::buildPayload($url);
+            $response = Proxy::postRequest($payload);
+            header("Content-Type: text/xml;charset=UTF-8");
+            echo $response;
+            return null;
+        }
+        SwseHandler::$url = $url;
+        SwseHandler::$usr = "swseCartierQual";
+        SwseHandler::$psw = "swseq@car2015";
+
+        $server = new SoapServer("http://proxy-sky.richemont.d1m.cn$_uri?wsdl", []);
+        $server->setClass("SwseHandler");
+        $server->handle();
+    }
+
     private static function dealProxy($url) {
 
         $payload = self::buildPayload($url);
-        $response = self::postRequest($payload);
+        $response = Proxy::postRequest($payload);
         $resource = self::getResource();
         $type = substr($url, -4);
         if (isset($resource[$type])) {
