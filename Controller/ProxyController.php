@@ -94,14 +94,9 @@ class ProxyController {
         SwseHandler::$usr = "swseCartierQual";
         SwseHandler::$psw = "swseq@car2015";
 
-        try {
-            $server = new SoapServer("http://proxy-sky.richemont.d1m.cn$_uri?wsdl", []);
-            $server->setClass("SwseHandler");
-            $server->handle();
-        } catch (SoapFault $soapFault) {
-            echo $soapFault->getMessage();
-        }
-        return null;
+        $server = new SoapServer("http://proxy-sky.richemont.d1m.cn$_uri?wsdl", []);
+        $server->setClass("SwseHandler");
+        $server->handle();
     }
 
     private static function dealProxy($url) {
