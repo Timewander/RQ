@@ -3,6 +3,8 @@
 include "env.php";
 include "init.php";
 
+Portal::route();
+
 $control = Request::control();
 if (!is_null($control)) {
     $action = "handler";

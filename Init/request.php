@@ -22,5 +22,5 @@ $gets = array_diff_key($gets, $path);
 Request::setPath(array_values($path));
 Request::setParams($gets);
 Request::setPayload($posts);
-Request::setMethod($_SERVER["REQUEST_METHOD"]);
+Request::setServer($_SERVER);
 Request::setHeader(apache_request_headers());

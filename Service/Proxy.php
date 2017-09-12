@@ -40,4 +40,40 @@ class Proxy {
         }
         return "";
     }
+
+    public static function dealProxy($url) {
+
+        $payload = self::buildPayload($url);
+        $response = self::postRequest($payload);
+        $resource = self::getResource();
+        $type = substr($url, -4);
+        if (isset($resource[$type])) {
+            $response = base64_decode($response);
+            header("Content-Type: " . $resource[$type]);
+        }
+        return $response;
+    }
+
+    private static function buildPayload($url) {
+
+        return [
+            "url" => $url,
+            "body" => Request::payload(),
+            "method" => Request::method(),
+            "header" => Http::setHeader(Request::headers()),
+        ];
+    }
+
+    private static function getResource() {
+
+        return [
+            ".jpg" => "image/jpeg",
+            ".png" => "image/png",
+            ".gif" => "image/gif",
+            ".mp3" => "audio/mp3",
+            ".amr" => "audio/amr",
+            ".avi" => "video/avi",
+            ".mp4" => "video/mpeg4",
+        ];
+    }
 }

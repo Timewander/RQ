@@ -59,9 +59,9 @@ class ProxyController {
     public static function rwf() {
 
         $host = "https://wechat-framework-quality.intranet.rccad.net";
-        $uri = substr($_SERVER["REQUEST_URI"], 10);
+        $uri = str_replace("/proxy/rwf", "", Request::uri());
         $url = $host . $uri;
-        $response = self::dealProxy($url);
+        $response = Proxy::dealProxy($url);
         echo $response;
         return null;
     }
@@ -69,70 +69,16 @@ class ProxyController {
     public static function rwf_backend() {
 
         $host = "https://wechat-quality.intranet.rccad.net/backend";
-        $uri = substr($_SERVER["REQUEST_URI"], 18);
+        $uri = str_replace("/proxy/rwf_backend", "", Request::uri());
         $url = $host . $uri;
-        $response = self::dealProxy($url);
+        $response = Proxy::dealProxy($url);
         echo $response;
         return null;
     }
 
     public static function swse() {
 
-        $host = "https://swset-cn-cartier-quality.intranet.rccad.net:8443/webservices";
-        $_uri = $_SERVER["REQUEST_URI"];
-        $uri = substr($_uri, 11);
-        $url = $host . $uri;
-        $checkWSDL = strtolower(substr($url, -5)) === "?wsdl";
-        if ($checkWSDL) {
-            $payload = self::buildPayload($url);
-            $response = Proxy::postRequest($payload);
-            header("Content-Type: text/xml;charset=UTF-8");
-            echo $response;
-            return null;
-        }
-        SwseHandler::$url = $url;
-        SwseHandler::$usr = "swseCartierQual";
-        SwseHandler::$psw = "swseq@car2015";
-
-        $server = new SoapServer("http://proxy-sky.richemont.d1m.cn$_uri?wsdl", []);
-        $server->setClass("SwseHandler");
-        $server->handle();
+        $uri = str_replace("/proxy/swse", "", Request::uri());
+        return Swse::webservice_quality($uri);
     }
-
-    private static function dealProxy($url) {
-
-        $payload = self::buildPayload($url);
-        $response = Proxy::postRequest($payload);
-        $resource = self::getResource();
-        $type = substr($url, -4);
-        if (isset($resource[$type])) {
-            $response = base64_decode($response);
-            header("Content-Type: " . $resource[$type]);
-        }
-        return $response;
-    }
-
-    private static function buildPayload($url) {
-
-        return [
-            "url" => $url,
-            "body" => Request::payload(),
-            "method" => Request::method(),
-            "header" => Http::setHeader(Request::headers()),
-        ];
-    }
-
-    private static function getResource() {
-
-        return [
-            ".jpg" => "image/jpeg",
-            ".png" => "image/png",
-            ".gif" => "image/gif",
-            ".mp3" => "audio/mp3",
-            ".amr" => "audio/amr",
-            ".avi" => "video/avi",
-            ".mp4" => "video/mpeg4",
-        ];
-    }
-
 }
