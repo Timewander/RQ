@@ -59,7 +59,7 @@ class ProxyController {
     public static function rwf() {
 
         $host = "https://wechat-framework-quality.intranet.rccad.net";
-        $uri = substr($_SERVER["REQUEST_URI"], 10);
+        $uri = str_replace("/proxy/rwf", "", Request::uri());
         $url = $host . $uri;
         $response = self::dealProxy($url);
         echo $response;
@@ -69,7 +69,7 @@ class ProxyController {
     public static function rwf_backend() {
 
         $host = "https://wechat-quality.intranet.rccad.net/backend";
-        $uri = substr($_SERVER["REQUEST_URI"], 18);
+        $uri = str_replace("/proxy/rwf_backend", "", Request::uri());
         $url = $host . $uri;
         $response = self::dealProxy($url);
         echo $response;
@@ -79,8 +79,9 @@ class ProxyController {
     public static function swse() {
 
         $host = "https://swset-cn-cartier-quality.intranet.rccad.net:8443/webservices";
-        $_uri = $_SERVER["REQUEST_URI"];
-        $uri = substr($_uri, 11);
+        $uri = str_replace("/proxy/swse", "", Request::uri());
+        // remove "/webservices" for Portal route
+        $uri = str_replace("/webservices", "", $uri);
         $url = $host . $uri;
         $checkWSDL = strtolower(substr($url, -5)) === "?wsdl";
         if ($checkWSDL) {
@@ -94,7 +95,7 @@ class ProxyController {
         SwseHandler::$usr = "swseCartierQual";
         SwseHandler::$psw = "swseq@car2015";
 
-        $server = new SoapServer("http://proxy-sky.richemont.d1m.cn$_uri?wsdl", []);
+        $server = new SoapServer("http://" . Request::domain() . Request::uri() . "?wsdl", []);
         $server->setClass("SwseHandler");
         $server->handle();
     }
