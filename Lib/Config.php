@@ -7,8 +7,11 @@ class Config {
     private static function init() {
 
         include ENV;
-        if (isset($env) && !empty($env)) {
-            self::$env = $env;
+        include RESOURCE;
+        if (isset($env) && !empty($env) && isset($resource) && !empty($resource)) {
+            self::$env = array_merge($resource, $env);
+        } else {
+            self::$env = [];
         }
 
         return self::$env;

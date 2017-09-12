@@ -8,6 +8,8 @@ class Request {
     private static $method;
     private static $domain;
     private static $uri;
+    private static $url;
+    private static $proxy_domain;
     private static $header = [];
 
     public static function setPath($path) {
@@ -30,6 +32,12 @@ class Request {
         self::$method = strtolower($server["REQUEST_METHOD"]);
         self::$domain = $server["SERVER_NAME"];
         self::$uri = $server["REQUEST_URI"];
+        self::$url = "http://" . self::$domain . self::$uri;
+    }
+
+    public static function setProxyDomain($domain) {
+
+        self::$proxy_domain = $domain;
     }
 
     public static function setHeader($header) {
@@ -99,6 +107,16 @@ class Request {
     public static function uri() {
 
         return self::$uri;
+    }
+
+    public static function url() {
+
+        return self::$url;
+    }
+
+    public static function proxy_domain() {
+
+        return self::$proxy_domain;
     }
 
     public static function headers() {
