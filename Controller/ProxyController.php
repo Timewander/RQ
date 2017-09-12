@@ -78,26 +78,8 @@ class ProxyController {
 
     public static function swse() {
 
-        $host = "https://swset-cn-cartier-quality.intranet.rccad.net:8443/webservices";
         $uri = str_replace("/proxy/swse", "", Request::uri());
-        // remove "/webservices" for Portal route
-        $uri = str_replace("/webservices", "", $uri);
-        $url = $host . $uri;
-        $checkWSDL = strtolower(substr($url, -5)) === "?wsdl";
-        if ($checkWSDL) {
-            $payload = self::buildPayload($url);
-            $response = Proxy::postRequest($payload);
-            header("Content-Type: text/xml;charset=UTF-8");
-            echo $response;
-            return null;
-        }
-        SwseHandler::$url = $url;
-        SwseHandler::$usr = "swseCartierQual";
-        SwseHandler::$psw = "swseq@car2015";
-
-        $server = new SoapServer("http://" . Request::domain() . Request::uri() . "?wsdl", []);
-        $server->setClass("SwseHandler");
-        $server->handle();
+        return Swse::webservice_quality($uri);
     }
 
     private static function dealProxy($url) {
