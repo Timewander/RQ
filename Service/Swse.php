@@ -32,4 +32,13 @@ class Swse {
         $server->handle();
         return null;
     }
+
+    public static function rest_quality() {
+
+        $host = "https://swset-cn-cartier-quality.intranet.rccad.net:8443";
+        $url = $host . Request::uri();
+        $response = Proxy::dealProxy($url);
+        echo $response;
+        return null;
+    }
 }
