@@ -5,7 +5,9 @@ class Request {
     private static $path = [];
     private static $params = [];
     private static $payload = [];
-    private static $method = "get";
+    private static $method;
+    private static $domain;
+    private static $uri;
     private static $header = [];
 
     public static function setPath($path) {
@@ -23,9 +25,11 @@ class Request {
         self::$payload = $payload;
     }
 
-    public static function setMethod($method) {
+    public static function setServer($server) {
 
-        self::$method = strtolower($method);
+        self::$method = strtolower($server["REQUEST_METHOD"]);
+        self::$domain = $server["SERVER_NAME"];
+        self::$uri = $server["REQUEST_URI"];
     }
 
     public static function setHeader($header) {
@@ -85,6 +89,16 @@ class Request {
     public static function method() {
 
         return self::$method;
+    }
+
+    public static function domain() {
+
+        return self::$domain;
+    }
+
+    public static function uri() {
+
+        return self::$uri;
     }
 
     public static function headers() {
