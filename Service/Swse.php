@@ -2,20 +2,6 @@
 
 class Swse {
 
-    private static function wsdl($url) {
-
-        $payload = [
-            "url" => $url,
-            "body" => Request::payload(),
-            "method" => Request::method(),
-            "header" => Http::setHeader(Request::headers()),
-        ];
-        $response = Proxy::postRequest($payload);
-        header("Content-Type: text/xml;charset=UTF-8");
-        echo $response;
-        return null;
-    }
-
     public static function webservice_quality($uri) {
 
         $host = "https://swset-cn-cartier-quality.intranet.rccad.net:8443/webservices";
@@ -40,5 +26,41 @@ class Swse {
         $response = Proxy::dealProxy($url);
         echo $response;
         return null;
+    }
+
+    private static function wsdl($url) {
+
+        if (config("WSDL_CACHE", true)) {
+            $response = self::load_from_cache($url);
+        } else {
+            $response = self::load_by_request($url);
+        }
+        header("Content-Type: text/xml;charset=UTF-8");
+        echo $response;
+        return null;
+    }
+
+    private static function load_by_request($url) {
+
+        $payload = [
+            "url" => $url,
+            "body" => Request::payload(),
+            "method" => Request::method(),
+            "header" => Http::setHeader(Request::headers()),
+        ];
+        return Proxy::postRequest($payload);
+    }
+
+    private static function load_from_cache($url) {
+
+        $redis = new RedisBase();
+        $response = $redis->RedisString($url)->get();
+        if ($response === false) {
+            $response = self::load_by_request($url);
+            $redis->RedisString($url)->set($response);
+            $ttl = max(intval(config("WSDL_CACHE_TTL", 3600)), 60);
+            $redis->expire($url, $ttl);
+        }
+        return $response;
     }
 }
