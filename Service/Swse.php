@@ -4,7 +4,7 @@ class Swse {
 
     public static function webservice_quality($uri) {
 
-        $host = "https://swset-cn-cartier-quality.intranet.rccad.net:8443/webservices";
+        $host = config("swse_soap_quality", "");
         $url = $host . $uri;
         if (!is_null(Request::get("wsdl"))) {
            return self::wsdl_quality($url);
@@ -21,7 +21,7 @@ class Swse {
 
     public static function rest_quality() {
 
-        $host = "https://swset-cn-cartier-quality.intranet.rccad.net:8443";
+        $host = config("swse_rest_quality", "");
         $url = $host . Request::uri();
         $response = Proxy::dealProxy($url);
         echo $response;
@@ -49,7 +49,7 @@ class Swse {
             "header" => Http::setHeader(Request::headers()),
         ];
         $response = Proxy::postRequest($payload);
-        return str_replace("http://swset-cn-cartier-quality.intranet.rccad.net:8080/webservices", Request::proxy_domain(), $response);
+        return str_replace(config("swse_wsdl_location_quality", ""), Request::proxy_domain(), $response);
     }
 
     private static function load_quality_from_cache($url) {

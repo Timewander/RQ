@@ -58,7 +58,7 @@ class ProxyController {
 
     public static function rwf() {
 
-        $host = "https://wechat-framework-quality.intranet.rccad.net";
+        $host = config("rwf_quality", "");
         $uri = str_replace("/proxy/rwf", "", Request::uri());
         $url = $host . $uri;
         $response = Proxy::dealProxy($url);
@@ -68,7 +68,7 @@ class ProxyController {
 
     public static function rwf_backend() {
 
-        $host = "https://wechat-quality.intranet.rccad.net/backend";
+        $host = config("rwf_backend_quality", "");
         $uri = str_replace("/proxy/rwf_backend", "", Request::uri());
         $url = $host . $uri;
         $response = Proxy::dealProxy($url);
@@ -79,7 +79,7 @@ class ProxyController {
     public static function swse() {
 
         $uri = str_replace("/proxy/swse", "", Request::uri());
-        Request::setProxyDomain("http://proxy-sky.richemont.d1m.cn/proxy/swse");
+        Request::setProxyDomain(config("main_domain", "") . "/proxy/swse");
         return Swse::webservice_quality($uri);
     }
 }

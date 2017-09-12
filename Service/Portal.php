@@ -6,12 +6,13 @@ class Portal {
 
         $host = Request::domain();
         $action = strtolower(substr(Request::control(), 0, -10));
-        switch ("$host/$action") {
-            case "dev-sky.richemont.d1m.cn/webservices" :
-                Request::setProxyDomain("http://dev-sky.richemont.d1m.cn/webservices");
+        $domain = config("portal_domain", "");
+        switch ("http://$host/$action") {
+            case "$domain/webservices" :
+                Request::setProxyDomain("$domain/webservices");
                 $uri = str_replace("/webservices", "", Request::uri());
                 return Swse::webservice_quality($uri);
-            case "dev-sky.richemont.d1m.cn/srvswse" :
+            case "$domain/srvswse" :
                 return Swse::rest_quality();
             default :
                 return null;
