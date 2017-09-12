@@ -3,8 +3,7 @@
 include "env.php";
 include "init.php";
 
-$host = Request::domain();
-Portal::route($host);
+Portal::route();
 
 $control = Request::control();
 if (!is_null($control)) {
