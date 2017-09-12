@@ -79,6 +79,7 @@ class ProxyController {
     public static function swse() {
 
         $uri = str_replace("/proxy/swse", "", Request::uri());
+        Request::setProxyDomain("http://proxy-sky.richemont.d1m.cn/proxy/swse");
         return Swse::webservice_quality($uri);
     }
 }
