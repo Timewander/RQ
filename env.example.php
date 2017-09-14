@@ -8,7 +8,9 @@ $env = [
     "WSDL_CACHE" => true,
     "WSDL_CACHE_TTL" => 3600,
 
-    "OAUTH_REDIRECT" => "",
+    "OAUTH_REDIRECT_MAP" => [
+        "default" => "",
+    ],
 
     "POWER" => "on",
 ];

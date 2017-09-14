@@ -5,6 +5,7 @@ class Request {
     private static $path = [];
     private static $params = [];
     private static $payload = [];
+    private static $cookie = [];
     private static $method;
     private static $domain;
     private static $uri;
@@ -25,6 +26,11 @@ class Request {
     public static function setPayload($payload) {
 
         self::$payload = $payload;
+    }
+
+    public static function setCookie($cookie) {
+
+        self::$cookie = $cookie;
     }
 
     public static function setServer($server) {
@@ -79,6 +85,11 @@ class Request {
         return isset(self::$payload[$key]) ? self::$payload[$key] : $default;
     }
 
+    public static function cookie($key, $default = null) {
+
+        return isset(self::$cookie[$key]) ? self::$cookie[$key] : $default;
+    }
+
     public static function header($key, $default = null) {
 
         return isset(self::$header[$key]) ? self::$header[$key] : $default;
@@ -92,6 +103,11 @@ class Request {
     public static function payload() {
 
         return self::$payload;
+    }
+
+    public static function cookies() {
+
+        return self::$cookie;
     }
 
     public static function method() {

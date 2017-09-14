@@ -10,8 +10,8 @@ class Swse {
            return self::wsdl_quality($url);
         }
         SwseHandler::$url = $url;
-        SwseHandler::$usr = "swseCartierQual";
-        SwseHandler::$psw = "swseq@car2015";
+        SwseHandler::$usr = config("swse_username_quality", "");
+        SwseHandler::$psw = config("swse_password_quality", "");
 
         $server = new SoapServer(Request::url() . "?wsdl", []);
         $server->setClass("SwseHandler");
