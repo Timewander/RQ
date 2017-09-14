@@ -10,6 +10,8 @@ class Request {
     private static $domain;
     private static $uri;
     private static $url;
+    private static $auth_usr;
+    private static $auth_pwd;
     private static $proxy_domain;
     private static $header = [];
 
@@ -39,6 +41,8 @@ class Request {
         self::$domain = $server["SERVER_NAME"];
         self::$uri = $server["REQUEST_URI"];
         self::$url = "http://" . self::$domain . self::$uri;
+        self::$auth_usr = isset($server["PHP_AUTH_USER"]) ? $server["PHP_AUTH_USER"] : null;
+        self::$auth_pwd = isset($server["PHP_AUTH_PW"]) ? $server["PHP_AUTH_PW"] : null;
     }
 
     public static function setProxyDomain($domain) {
@@ -128,6 +132,16 @@ class Request {
     public static function url() {
 
         return self::$url;
+    }
+
+    public static function auth_usr() {
+
+        return self::$auth_usr;
+    }
+
+    public static function auth_pwd() {
+
+        return self::$auth_pwd;
     }
 
     public static function proxy_domain() {
