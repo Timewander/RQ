@@ -41,9 +41,9 @@ class Proxy {
         return "";
     }
 
-    public static function dealProxy($url) {
+    public static function dealProxy($url, $env) {
 
-        $payload = self::buildPayload($url);
+        $payload = self::buildPayload($url, $env);
         $response = self::postRequest($payload);
         $resource = self::getResource();
         $type = substr($url, -4);
@@ -54,13 +54,15 @@ class Proxy {
         return $response;
     }
 
-    private static function buildPayload($url) {
+    private static function buildPayload($url, $env) {
 
+        $header = Request::headers();
+        $header["Host"] = str_replace("sky", $env, $header["Host"]);
         return [
             "url" => $url,
             "body" => Request::payload(),
             "method" => Request::method(),
-            "header" => Http::setHeader(Request::headers()),
+            "header" => Http::setHeader($header),
         ];
     }
 
