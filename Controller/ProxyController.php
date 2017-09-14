@@ -61,7 +61,7 @@ class ProxyController {
         $host = config("rwf_quality", "");
         $uri = str_replace("/proxy/rwf", "", Request::uri());
         $url = $host . $uri;
-        $response = Proxy::dealProxy($url);
+        $response = Proxy::dealProxy($url, "quality");
         echo $response;
         return null;
     }
@@ -71,7 +71,7 @@ class ProxyController {
         $host = config("rwf_backend_quality", "");
         $uri = str_replace("/proxy/rwf_backend", "", Request::uri());
         $url = $host . $uri;
-        $response = Proxy::dealProxy($url);
+        $response = Proxy::dealProxy($url, "quality");
         echo $response;
         return null;
     }
