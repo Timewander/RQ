@@ -23,7 +23,7 @@ class Swse {
 
         $host = config("swse_rest_quality", "");
         $url = $host . Request::uri();
-        $response = Proxy::dealProxy($url);
+        $response = Proxy::dealProxy($url, "quality");
         echo $response;
         return null;
     }

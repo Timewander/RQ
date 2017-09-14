@@ -23,6 +23,8 @@ class ProxyController {
                 return self::rwf_backend();
             case "swse" :
                 return self::swse();
+            case "oauth" :
+                return self::oauth();
             default :
                 break;
         }
@@ -81,5 +83,13 @@ class ProxyController {
         $uri = str_replace("/proxy/swse", "", Request::uri());
         Request::setProxyDomain(config("main_domain", "") . "/proxy/swse");
         return Swse::webservice_quality($uri);
+    }
+
+    public static function oauth() {
+
+        $uri = str_replace("/proxy/oauth", "", Request::uri());
+        $url = config("OAUTH_REDIRECT", "") . $uri;
+        header("Location: $url");
+        return null;
     }
 }
