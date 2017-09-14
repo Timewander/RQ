@@ -13,6 +13,10 @@ class ProxyController {
                 return self::response();
             case "power:get" :
                 return self::power();
+            case "getOauth:get" :
+                return self::getOauth();
+            case "oauth:get" :
+                return self::oauth();
             default :
                 break;
         }
@@ -23,8 +27,6 @@ class ProxyController {
                 return self::rwf_backend();
             case "swse" :
                 return self::swse();
-            case "oauth" :
-                return self::oauth();
             default :
                 break;
         }
@@ -85,11 +87,14 @@ class ProxyController {
         return Swse::webservice_quality($uri);
     }
 
+    public static function getOauth() {
+
+        return Auth::getOauth();
+    }
+
     public static function oauth() {
 
         $uri = str_replace("/proxy/oauth", "", Request::uri());
-        $url = config("OAUTH_REDIRECT", "") . $uri;
-        header("Location: $url");
-        return null;
+        return Auth::oauth($uri);
     }
 }
