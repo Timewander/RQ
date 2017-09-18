@@ -15,8 +15,7 @@ class Proxy {
             ]);
             return $res;
         }
-        http_response_code(404);
-        return "";
+        return response("", 404);
     }
 
     public static function postRequest($data = null) {
@@ -38,8 +37,9 @@ class Proxy {
                 }
                 $try ++;
             }
+            return response("", 408);
         }
-        return "";
+        return response("", 400);
     }
 
     public static function dealProxy($url, $env) {

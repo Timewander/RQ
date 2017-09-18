@@ -16,7 +16,7 @@ class Swse {
         $server = new SoapServer(Request::url() . "?wsdl", []);
         $server->setClass("SwseHandler");
         $server->handle();
-        return null;
+        return response();
     }
 
     public static function rest_quality() {
@@ -24,8 +24,7 @@ class Swse {
         $host = config("swse_rest_quality", "");
         $url = $host . Request::uri();
         $response = Proxy::dealProxy($url, "quality");
-        echo $response;
-        return null;
+        return response($response);
     }
 
     private static function wsdl_quality($url) {
@@ -35,9 +34,7 @@ class Swse {
         } else {
             $response = self::load_quality_by_request($url);
         }
-        header("Content-Type: text/xml;charset=UTF-8");
-        echo $response;
-        return null;
+        return response($response, 200, ["Content-Type: text/xml;charset=UTF-8"]);
     }
 
     private static function load_quality_by_request($url) {

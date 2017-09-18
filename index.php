@@ -11,5 +11,5 @@ if (!is_null($control)) {
     if (class_exists($control) && method_exists(new $control(), $action)) {
         return $control::$action();
     }
-    return;
+    return response("", 404);
 }

@@ -30,34 +30,32 @@ class ProxyController {
             default :
                 break;
         }
-        return null;
+        return response("", 404);
 	}
 
 	public static function request() {
 
-        header("Access-Control-Allow-Origin: *");
+        Response::setHeaders(["Access-Control-Allow-Origin: *"]);
         $response = Request::method() == "get" ? Proxy::getRequest() : Proxy::postRequest();
-        echo $response;
-        return null;
-	}
+        return response($response, 200);
+    }
 
     public static function response() {
 
-        header("Access-Control-Allow-Origin: *");
+        Response::setHeaders(["Access-Control-Allow-Origin: *"]);
         $key = Request::post("key");
         $data = Request::post("data");
         if (!is_null($key) && !is_null($data)) {
             $key .= "_response";
             redis()->RedisString($key)->set($data);
         }
-        return "success";
+        return response("success", 200);
     }
 
     public static function power() {
 
-        header("Access-Control-Allow-Origin: *");
-        echo config("POWER", "on");
-        return null;
+        Response::setHeaders(["Access-Control-Allow-Origin: *"]);
+        return response(config("POWER", "on"), 200);
     }
 
     public static function rwf() {
@@ -66,8 +64,7 @@ class ProxyController {
         $uri = str_replace("/proxy/rwf", "", Request::uri());
         $url = $host . $uri;
         $response = Proxy::dealProxy($url, "quality");
-        echo $response;
-        return null;
+        return response($response);
     }
 
     public static function rwf_backend() {
@@ -76,8 +73,7 @@ class ProxyController {
         $uri = str_replace("/proxy/rwf_backend", "", Request::uri());
         $url = $host . $uri;
         $response = Proxy::dealProxy($url, "quality");
-        echo $response;
-        return null;
+        return response($response);
     }
 
     public static function swse() {

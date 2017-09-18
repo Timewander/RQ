@@ -9,3 +9,9 @@ function redis() {
 
     return new RedisBase();
 }
+
+function response($content = "", $http_code = 200, $header = []) {
+
+    Response::build($content, $http_code, $header);
+    return null;
+}
