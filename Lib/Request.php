@@ -58,10 +58,7 @@ class Request {
     public static function control() {
 
         $control = self::path(0);
-        if (is_null($control)) {
-            return null;
-        }
-        return strtoupper(substr($control, 0, 1)) . substr($control, 1) . "Controller";
+        return is_null($control) ? null : strtoupper(substr($control, 0, 1)) . substr($control, 1) . "Controller";
     }
 
     public static function action() {

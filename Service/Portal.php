@@ -11,12 +11,11 @@ class Portal {
             case "$domain/webservices" :
                 Request::setProxyDomain("$domain/webservices");
                 $uri = str_replace("/webservices", "", Request::uri());
-                return Swse::webservice_quality($uri);
+                Swse::webservice_quality($uri);
+                break;
             case "$domain/srvswse" :
-                return Swse::rest_quality();
-            default :
-                return null;
+                Swse::rest_quality();
+                break;
         }
     }
-
 }

@@ -15,9 +15,9 @@ class Http {
         return $ch;
     }
 
-	public static function network($url, $header = [], $method = "get", $payload = "", $timeout = 60) {
+    public static function network($url, $header = [], $method = "get", $payload = "", $timeout = 60) {
 
-		$ch = self::init();
+        $ch = self::init();
         switch (strtoupper($method)) {
             case "POST" :
                 curl_setopt($ch, CURLOPT_POST, true);
@@ -35,29 +35,29 @@ class Http {
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
-		$file_contents = curl_exec($ch);
-		curl_close($ch);
-		return $file_contents;
-	}
+        $file_contents = curl_exec($ch);
+        curl_close($ch);
+        return $file_contents;
+    }
 
-	public static function get($url, $header = []) {
+    public static function get($url, $header = []) {
 
-		return self::network($url, $header, "get", "", 10);
-	}
+        return self::network($url, self::setHeader($header), "get", "", 10);
+    }
 
-	public static function post($url, $payload, $header = []) {
-
-        list($payload, $header) = self::setPayload($payload, $header);
-		return self::network($url, self::setHeader($header), "post", $payload, 10);
-	}
-
-	public static function put($url, $payload, $header = []) {
+    public static function post($url, $payload, $header = []) {
 
         list($payload, $header) = self::setPayload($payload, $header);
-		return self::network($url, self::setHeader($header), "put", $payload, 10);
-	}
+        return self::network($url, self::setHeader($header), "post", $payload, 10);
+    }
 
-	public static function call($url, $method, $header = []) {
+    public static function put($url, $payload, $header = []) {
+
+        list($payload, $header) = self::setPayload($payload, $header);
+        return self::network($url, self::setHeader($header), "put", $payload, 10);
+    }
+
+    public static function call($url, $method, $header = []) {
 
         return self::network($url, self::setHeader($header), $method, "", 10);
     }
@@ -84,6 +84,9 @@ class Http {
 
     public static function setHeader($header) {
 
+        if (!isMap($header)) {
+            return $header;
+        }
         $result = [];
         foreach ($header as $key => $value) {
             $result[] = "$key: $value";
@@ -91,7 +94,20 @@ class Http {
         return $result;
     }
 
-	public static function urlencoded($body) {
+    public static function getHeader($header) {
+
+        if (isMap($header)) {
+            return $header;
+        }
+        $result = [];
+        foreach ($header as $line) {
+            list($key, $value) = explode(":", $line);
+            $result[trim($key)] = trim($value);
+        }
+        return $result;
+    }
+
+    public static function urlencoded($body) {
 
         $params = [];
         foreach ($body as $key => $val) {

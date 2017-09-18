@@ -15,7 +15,7 @@ class Proxy {
             ]);
             return $res;
         }
-        return "";
+        return response("", 404);
     }
 
     public static function postRequest($data = null) {
@@ -28,7 +28,7 @@ class Proxy {
             $redis->RedisList("proxy_request_list")->add($key);
             $try = 0;
             $key .= "_response";
-            while ($try < 600) {
+            while ($try < 1000) {
                 usleep(50000);
                 $res = $redis->RedisString($key)->get();
                 if ($res !== false) {
@@ -37,8 +37,9 @@ class Proxy {
                 }
                 $try ++;
             }
+            return response("", 408);
         }
-        return "";
+        return response("", 400);
     }
 
     public static function dealProxy($url, $env) {
