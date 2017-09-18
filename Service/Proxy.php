@@ -15,6 +15,7 @@ class Proxy {
             ]);
             return $res;
         }
+        http_response_code(404);
         return "";
     }
 
@@ -28,7 +29,7 @@ class Proxy {
             $redis->RedisList("proxy_request_list")->add($key);
             $try = 0;
             $key .= "_response";
-            while ($try < 600) {
+            while ($try < 1000) {
                 usleep(50000);
                 $res = $redis->RedisString($key)->get();
                 if ($res !== false) {
