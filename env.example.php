@@ -11,6 +11,7 @@ $env = [
     "OAUTH_REDIRECT_MAP" => [
         "default" => "",
     ],
+    "OAUTH_CACHE_TTL" => 86400,
 
     "POWER" => "on",
 ];
