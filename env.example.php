@@ -14,4 +14,9 @@ $env = [
     "OAUTH_CACHE_TTL" => 86400,
 
     "POWER" => "on",
+
+    "WECHAT_TOKEN" => "",
+    "WECHAT_APP_ID" => "",
+    "WECHAT_APP_SECRET" => "",
+    "WECHAT_AES_KEY" => "",
 ];

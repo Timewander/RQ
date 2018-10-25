@@ -23,6 +23,10 @@ class ProxyController {
         switch ($action) {
             case "rwf" :
                 return self::rwf();
+            case "dms" :
+                return self::dms();
+            case "mdc" :
+                return self::mdc();
             case "rwf_backend" :
                 return self::rwf_backend();
             case "swse" :
@@ -60,6 +64,11 @@ class ProxyController {
 
     public static function rwf() {
 
+        Response::setHeaders([
+            "Access-Control-Allow-Origin: *",
+            "Access-Control-Allow-Headers: access_token, brandId, Content-Type",
+            "Access-Control-Allow-Methods: GET, POST, PUT, DELETE, HEAD, OPTIONS"
+        ]);
         $host = config("rwf_quality", "");
         $uri = str_replace("/proxy/rwf", "", Request::uri());
         $url = $host . $uri;
@@ -67,8 +76,41 @@ class ProxyController {
         return response($response);
     }
 
+    public static function dms() {
+
+        Response::setHeaders([
+            "Access-Control-Allow-Origin: *",
+            "Access-Control-Allow-Headers: access_token, brandId, Content-Type",
+            "Access-Control-Allow-Methods: GET, POST, PUT, DELETE, HEAD, OPTIONS"
+        ]);
+        $host = config("dms_quality", "");
+        $uri = str_replace("/proxy/dms", "", Request::uri());
+        $url = $host . $uri;
+        $response = Proxy::dealProxy($url, "quality");
+        return response($response);
+    }
+
+    public static function mdc() {
+
+        Response::setHeaders([
+            "Access-Control-Allow-Origin: *",
+            "Access-Control-Allow-Headers: access_token, brandId, Content-Type",
+            "Access-Control-Allow-Methods: GET, POST, PUT, DELETE, HEAD, OPTIONS"
+        ]);
+        $host = config("mdc_quality", "");
+        $uri = str_replace("/proxy/mdc", "", Request::uri());
+        $url = $host . $uri;
+        $response = Proxy::dealProxy($url, "quality");
+        return response($response);
+    }
+
     public static function rwf_backend() {
 
+        Response::setHeaders([
+            "Access-Control-Allow-Origin: *",
+            "Access-Control-Allow-Headers: access_token, brandId, Content-Type",
+            "Access-Control-Allow-Methods: GET, POST, PUT, DELETE, HEAD, OPTIONS"
+        ]);
         $host = config("rwf_backend_quality", "");
         $uri = str_replace("/proxy/rwf_backend", "", Request::uri());
         $url = $host . $uri;
