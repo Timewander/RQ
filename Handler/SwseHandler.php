@@ -23,7 +23,7 @@ class SwseHandler {
 
         $result = json_decode(Proxy::postRequest($payload), true);
         if (isset($result["faultstring"])) {
-            throw new SoapFault($result["faultcode"], $result["faultstring"], null, a2o($result["detail"]));
+            throw new SoapFault($result["faultcode"], $result["faultstring"], null, json_encode($result["detail"]));
         }
         return $result;
     }
