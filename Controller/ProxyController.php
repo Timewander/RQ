@@ -23,10 +23,16 @@ class ProxyController {
         switch ($action) {
             case "rwf" :
                 return self::rwf();
+            case "rwf2" :
+                return self::rwf2();
             case "dms" :
                 return self::dms();
+            case "dmsC" :
+                return self::dmsC();
             case "mdc" :
                 return self::mdc();
+            case "varnish" :
+                return self::varnish();
             case "rwf_backend" :
                 return self::rwf_backend();
             case "swse" :
@@ -76,6 +82,20 @@ class ProxyController {
         return response($response);
     }
 
+    public static function rwf2() {
+
+        Response::setHeaders([
+            "Access-Control-Allow-Origin: *",
+            "Access-Control-Allow-Headers: access_token, brandId, Content-Type",
+            "Access-Control-Allow-Methods: GET, POST, PUT, DELETE, HEAD, OPTIONS"
+        ]);
+        $host = config("rwf2_quality", "");
+        $uri = str_replace("/proxy/rwf2", "", Request::uri());
+        $url = $host . $uri;
+        $response = Proxy::dealProxy($url, "quality");
+        return response($response);
+    }
+
     public static function dms() {
 
         Response::setHeaders([
@@ -90,6 +110,20 @@ class ProxyController {
         return response($response);
     }
 
+    public static function dmsC() {
+
+        Response::setHeaders([
+            "Access-Control-Allow-Origin: *",
+            "Access-Control-Allow-Headers: access_token, brandId, Content-Type",
+            "Access-Control-Allow-Methods: GET, POST, PUT, DELETE, HEAD, OPTIONS"
+        ]);
+        $host = config("dmsC_quality", "");
+        $uri = str_replace("/proxy/dmsC", "", Request::uri());
+        $url = $host . $uri;
+        $response = Proxy::dealProxy($url, "quality");
+        return response($response);
+    }
+
     public static function mdc() {
 
         Response::setHeaders([
@@ -99,6 +133,29 @@ class ProxyController {
         ]);
         $host = config("mdc_quality", "");
         $uri = str_replace("/proxy/mdc", "", Request::uri());
+        $url = $host . $uri;
+        $response = Proxy::dealProxy($url, "quality");
+        return response($response);
+    }
+
+    public static function commerce() {
+
+        Response::setHeaders([
+            "Access-Control-Allow-Origin: *",
+            "Access-Control-Allow-Headers: access_token, brandId, Content-Type",
+            "Access-Control-Allow-Methods: GET, POST, PUT, DELETE, HEAD, OPTIONS"
+        ]);
+        $host = config("mdc_quality", "");
+        $uri = str_replace("/commerce", "", Request::uri());
+        $url = $host . $uri;
+        $response = Proxy::dealProxy($url, "quality");
+        return response($response);
+    }
+
+    public static function varnish() {
+
+        $host = config("varnish", "");
+        $uri = str_replace("/proxy/varnish", "", Request::uri());
         $url = $host . $uri;
         $response = Proxy::dealProxy($url, "quality");
         return response($response);

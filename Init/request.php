@@ -9,7 +9,7 @@ if (isset($_SERVER["CONTENT_TYPE"]) && strpos($_SERVER["CONTENT_TYPE"], "applica
 }
 
 $path = [];
-$rule = ["P_C", "P_A", "P_P1", "P_P2", "P_P3", "P_P4", "P_P5", "P_P6"];
+$rule = ["P_C", "P_A", "P_P1", "P_P2", "P_P3", "P_P4", "P_P5", "P_P6", "P_P7"];
 foreach ($rule as $item) {
     if (isset($gets[$item])) {
         $path[$item] = $gets[$item];

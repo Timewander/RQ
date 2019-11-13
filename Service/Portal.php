@@ -16,6 +16,9 @@ class Portal {
             case "$domain/srvswse" :
                 Swse::rest_quality();
                 break;
+            case "$domain/commerce" :
+                ProxyController::commerce();
+                break;
         }
     }
 }
